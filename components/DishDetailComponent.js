@@ -104,20 +104,92 @@ class DishDetail extends Component {
     };
 
     render() {
+        const { rating } = this.props;
         const dishId = this.props.navigation.getParam('dishId', '');
 
         return (
+            
             <ScrollView>
                 <RenderDish dish={this.props.dishes.dishes[+dishId]} 
                      favorite={this.props.favorites.some(el => el === dishId)}
                     onPress={() => this.markFavorite(dishId)}
                 />
                 <RenderComments comments={this.props.comments.comments.filter((comments) => comments.dishId === dishId)} />
+                <Modal animationType = {"slide"} transparent = {false}
+                    visible = {this.state.showModal}
+                    onDismiss = {() => this.toggleModal() }
+                    onRequestClose = {() => this.toggleModal() }>
+                <View style = {styles.modal}>
+
+                        <Rating
+                            showRating
+                            fractions={0}
+                            startingValue={this.state.rating}
+                            imageSize={40}
+                            onFinishRating={(rating)=>this.setState({rating: rating})}
+                            style={{ paddingVertical: 10 }}
+
+                        />
+
+
+                        <Input
+                            placeholder=" Author"
+                            leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+                            onChangeText={(author) => {this.setState({author: author})}}
+                            value={this.state.author}
+                        />
+
+
+
+
+                        <Input
+                            placeholder=" Comment"
+                            leftIcon={{ type: 'font-awesome', name: 'comment-o' }}
+                            onChangeText={(comment) => {this.setState({comment: comment})}}
+                            value={this.state.comment}
+                        />
+
+
+
+                        <Button
+                        onPress={() => this.handleComment(dishId)}
+                        title="submit"
+                        color="#512DA8"
+                        accessibilityLabel="Learn more about this purple button"
+                        />
+
+
+                        <Button 
+                            onPress = {() =>{this.toggleModal(); this.resetForm() }}
+                            color="#666666"
+                            title="cancell" 
+                            />
+                    </View>
+
+
+            </Modal>
             </ScrollView>
         );
 
     }
 }
+const styles = StyleSheet.create({
+    cardRow: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        margin: 20
+    },
+    cardItem: {
+        flex: 1,
+        margin: 10
+    },
+    modal: {
+        justifyContent: 'center',
+        margin: 20
+    }  
+});
 
 
 
