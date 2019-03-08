@@ -26,6 +26,7 @@ class Menu extends Component {
         title: 'Menu'
     };
 
+    
 
     render(){
         const renderMenuItem = ({item, index}) => {
@@ -65,5 +66,6 @@ class Menu extends Component {
         }
     }
 }
+
 
 export default connect(mapStateToProps)(Menu);

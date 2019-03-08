@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList } from 'react-native';
-import { Card, Icon } from 'react-native-elements';
+import { Text, View, ScrollView, FlatList, StyleSheet, Picker, Switch, Button, Modal, TextInput,  } from 'react-native';
+import { Card, Icon, Rating, Input } from 'react-native-elements';
 import { baseUrl } from '../shared/baseUrl';
 import { connect } from 'react-redux'
-import { postFavorite } from '../redux/ActionCreators';
+import { postFavorite, postComment } from '../redux/ActionCreators';
+import { COMMENTS } from '../shared/comments';
+import { DISHES } from '../shared/dishes';
 
 
 const mapStateToProps = state => {
@@ -16,7 +18,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    postFavorite: (dishId) => dispatch(postFavorite(dishId))
+    postFavorite: (dishId) => dispatch(postFavorite(dishId)),
+    postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment))
 })
 
 
@@ -58,6 +61,14 @@ function RenderComments(props) {
                 <Text style={{ fontSize: 14 }}>{item.comment}</Text>
                 <Text style={{ fontSize: 12 }}>{item.rating}Stars</Text>
                 <Text style={{ fontSize: 12 }}>{'-- ' + item.author + ', ' + item.date}</Text>
+                <Rating 
+                    type="star"
+                    fractions={0}
+                    startingValue={+item.rating}
+                    imageSize={10}
+                    readonly
+                    style={{alignItems: 'flex-start', paddingVertical: '5%'}}
+                />
             </View>
         );
     }

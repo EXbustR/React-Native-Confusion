@@ -5,6 +5,9 @@ import { Card } from 'react-native-elements';
 import { baseUrl } from '../shared/baseUrl';
 import { connect } from 'react-redux'
 import { Loading } from './LoadingComponent';
+import { DISHES } from '../shared/dishes';
+
+
 
 
 const mapStateToProps = state => {
