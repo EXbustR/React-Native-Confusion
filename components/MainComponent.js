@@ -10,12 +10,16 @@ import { Icon, withTheme } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 import Reservation from './ReservationComponent';
+import Favorites from './FavoriteComponent';
 
 
 
 const mapStateToProps = state => {
     return {
-        
+        dishes: state.dishes,
+        comments: state.comments,
+        promotions: state.promotions,
+        leaders: state.leaders
     }
 }
 
@@ -87,6 +91,23 @@ const AboutNavigator = createStackNavigator({
     })
   });
 
+  const FavoritesNavigator = createStackNavigator({
+    Favorites: { screen: Favorites }
+  }, {
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+          backgroundColor: "#512DA8"
+      },
+      headerTitleStyle: {
+          color: "#fff"            
+      },
+      headerTintColor: "#fff",
+      headerLeft: <Icon name="menu" size={24}
+      color='white'
+      onPress={ () => navigation.toggleDrawer() } />   
+    })
+  })
+
 
   const ReservationNavigator = createStackNavigator({
     Reservation: { screen: Reservation }
@@ -155,6 +176,21 @@ const MainNavigator = createDrawerNavigator({
           color={tintColor}
         />
       )
+    }
+  },
+  Favorites:
+  { screen: FavoritesNavigator,
+    navigationOptions: {
+      title: 'My Favorites',
+      drawerLabel: 'My Favorites',
+      drawerIcon: ({ tintColor, focused }) => (
+        <Icon
+          name='heart'
+          type='font-awesome'            
+          size={24}
+          color={tintColor}
+        />
+      ),
     }
   },
   Reservation:
