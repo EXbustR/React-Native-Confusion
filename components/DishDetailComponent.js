@@ -7,6 +7,7 @@ import { postFavorite, postComment } from '../redux/ActionCreators';
 import * as Animatable from 'react-native-animatable';
 
 
+
 const mapStateToProps = state => {
     return {
         dishes: state.dishes,
@@ -15,13 +16,20 @@ const mapStateToProps = state => {
     }
 };
 
+
 const mapDispatchToProps = dispatch => ({
     postFavorite: (dishId) => dispatch(postFavorite(dishId)),
     postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment))
 });
 
-function RenderDish(props) {
+function RenderDish(props) {    
     handleViewRef = ref => this.view = ref;
+    const recognizeComment = ({ moveX, moveY, dx, dy }) => {
+        if ( dx < 200 )
+            return true;
+        else
+            return false;
+    }
 
     const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
         if ( dx < -200 )
@@ -47,7 +55,9 @@ function RenderDish(props) {
                     {text: 'OK', onPress: () => {props.favorite ? console.log('Already favorite') : props.onPress()}},
                     ],
                     { cancelable: false }
+                    
                 );
+                else if (recognizeComment(gestureState)) props.onShowModal()
 
             return true;
         }
@@ -167,11 +177,12 @@ class DishDetail extends Component {
                     onPress={() => this.markFavorite(dishId)}
                     onShowModal={() => this.toggleModal()}
                 />
-                <RenderComments comments={this.props.comments.comments.filter((comment) => comment.dishId === dishId)} />
+                <RenderComments comments={this.props.comments.comments.filter((comment) => comment.dishId === dishId)} />   
                 <Modal animationType={"slide"} transparent={false}
                     visible={this.state.showModal}
                     onDismiss={() => this.toggleModal()}
-                    onRequestClose={() => this.toggleModal()}>
+                    onRequestClose={() => this.toggleModal()}
+                    onShowModal={() => this.toggleModal()}>
                     <View style={styles.modal}>
                         <Rating
                             showRating
@@ -230,6 +241,42 @@ const styles = StyleSheet.create({
     modal: {
         justifyContent: 'center',
         margin: 20
+    },
+    formRow: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        margin: 20
+    },
+    modalTitle: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        backgroundColor: '#512DA8',
+        textAlign: 'center',
+        color: 'white',
+        marginBottom: 20
+    },
+    textInput: {
+        height: 40,
+        width: 200,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        borderColor: 'gray',
+        borderWidth: 1,
+    },
+    cancelButton: {
+        alignItems: 'center',
+        backgroundColor: '#DDDDDD',
+        padding: 10,
+        margin: 15
+    },
+    submitButton: {
+        alignItems: 'center',
+        backgroundColor: '#512DA8',
+        padding: 10,
+        margin: 15
     }
 });
 

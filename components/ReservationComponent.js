@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal } from 'react-native';
-import DatePicker from 'react-native-datepicker'
+import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert } from 'react-native';
+import DatePicker from 'react-native-datepicker';   
+import * as Animatable from 'react-native-animatable';
+
+
+
 
 class Reservation extends Component {
 
@@ -25,12 +29,26 @@ class Reservation extends Component {
 
 
     handleReservation() {
+        Alert.alert(
+            'Your Reservation ok?',
+            'Number of guest: ' + this.state.guests + '\nSmoking?: ' + this.state.smoking + '\nDate and Time: ' + this.state.date,
+            [
+              {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+              {
+                text: 'Cancel',
+                onPress: () => this.resetForm(),
+                style: 'cancel',
+              },
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            {cancelable: false},
+          );
         console.log(JSON.stringify(this.state));
-        this.setState({
-            guests: 1,
-            smoking: false,
-            date: ''
-        });
+        // this.setState({
+        //     guests: 1,
+        //     smoking: false,
+        //     date: ''
+        // });
     }
     
     resetForm() {
@@ -44,7 +62,8 @@ class Reservation extends Component {
 
     render() {
         return(
-            <ScrollView>
+            <Animatable.View animation="zoomIn" duration={2000} delay={1000}>
+
                 <View style={styles.formRow}>
                 <Text style={styles.formLabel}>Number of Guests</Text>
                 <Picker
@@ -118,8 +137,8 @@ class Reservation extends Component {
                             />
                     </View>
                 </Modal>
-            </ScrollView>
-        );
+            </Animatable.View>
+            );
     }
 
 };
