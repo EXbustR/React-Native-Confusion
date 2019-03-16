@@ -17,28 +17,29 @@ import Login from './LoginComponent';
 const LoginNavigator = createStackNavigator({
   Login: { screen: Login }
 }, {
-navigationOptions: ({ navigation }) => ({
-  headerStyle: {
-      backgroundColor: "#512DA8"
-  },
-  headerTitleStyle: {
-      color: "#fff"            
-  },
-  headerTintColor: "#fff",
-  headerLeft: <Icon name="menu" size={24}
-    color='white'    
-    onPress={ () => navigation.toggleDrawer() } />    
-})
-});
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: "#512DA8"
+      },
+      headerTitleStyle: {
+        color: "#fff"
+      },
+      title: 'Login',
+      headerTintColor: "#fff",
+      headerLeft: <Icon name="menu" size={24}
+        color='white'
+        onPress={() => navigation.toggleDrawer()} />
+    })
+  });
 
 
 const mapStateToProps = state => {
-    return {
-        dishes: state.dishes,
-        comments: state.comments,
-        promotions: state.promotions,
-        leaders: state.leaders
-    }
+  return {
+    dishes: state.dishes,
+    comments: state.comments,
+    promotions: state.promotions,
+    leaders: state.leaders
+  }
 }
 
 const mapDispatchToProps = dispatch => ({
@@ -109,41 +110,41 @@ const AboutNavigator = createStackNavigator({
     })
   });
 
-  const FavoritesNavigator = createStackNavigator({
-    Favorites: { screen: Favorites }
-  }, {
+const FavoritesNavigator = createStackNavigator({
+  Favorites: { screen: Favorites }
+}, {
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
-          backgroundColor: "#512DA8"
+        backgroundColor: "#512DA8"
       },
       headerTitleStyle: {
-          color: "#fff"            
+        color: "#fff"
       },
       headerTintColor: "#fff",
       headerLeft: <Icon name="menu" size={24}
-      color='white'
-      onPress={ () => navigation.toggleDrawer() } />   
+        color='white'
+        onPress={() => navigation.toggleDrawer()} />
     })
   })
 
 
-  const ReservationNavigator = createStackNavigator({
-    Reservation: { screen: Reservation }
-  }, {
+const ReservationNavigator = createStackNavigator({
+  Reservation: { screen: Reservation }
+}, {
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
-          backgroundColor: "#512DA8"
+        backgroundColor: "#512DA8"
       },
       headerTitleStyle: {
-          color: "#fff"            
+        color: "#fff"
       },
       headerTintColor: "#fff",
       headerLeft: <Icon name="menu" size={24}
-      color='white'
-      onPress={ () => navigation.toggleDrawer() } /> 
-     })
+        color='white'
+        onPress={() => navigation.toggleDrawer()} />
+    })
   });
-  
+
 
 
 const CustomDrawerContentComponent = (props) => (
@@ -197,14 +198,15 @@ const MainNavigator = createDrawerNavigator({
     }
   },
   Favorites:
-  { screen: FavoritesNavigator,
+  {
+    screen: FavoritesNavigator,
     navigationOptions: {
       title: 'My Favorites',
       drawerLabel: 'My Favorites',
       drawerIcon: ({ tintColor, focused }) => (
         <Icon
           name='heart'
-          type='font-awesome'            
+          type='font-awesome'
           size={24}
           color={tintColor}
         />
@@ -212,35 +214,37 @@ const MainNavigator = createDrawerNavigator({
     }
   },
   Reservation:
-      { screen: ReservationNavigator,
-        navigationOptions: {
-          title: 'Reserve Table',
-          drawerLabel: 'Reserve Table',
-          drawerIcon: ({ tintColor, focused }) => (
-            <Icon
-              name='cutlery'
-              type='font-awesome'            
-              size={24}
-              color={tintColor}
-            />
-          ),
-        }
-      },
-      Login: 
-      { screen: LoginNavigator,
-        navigationOptions: {
-          title: 'Login',
-          drawerLabel: 'Login',
-          drawerIcon: ({ tintColor, focused }) => (
-            <Icon
-              name='sign-in'
-              type='font-awesome'            
-              size={24}
-              color={tintColor}
-            />
-          ),
-        }
-      },
+  {
+    screen: ReservationNavigator,
+    navigationOptions: {
+      title: 'Reserve Table',
+      drawerLabel: 'Reserve Table',
+      drawerIcon: ({ tintColor, focused }) => (
+        <Icon
+          name='cutlery'
+          type='font-awesome'
+          size={24}
+          color={tintColor}
+        />
+      ),
+    }
+  },
+  Login:
+  {
+    screen: LoginNavigator,
+    navigationOptions: {
+      title: 'Login',
+      drawerLabel: 'Login',
+      drawerIcon: ({ tintColor, focused }) => (
+        <Icon
+          name='sign-in'
+          type='font-awesome'
+          size={24}
+          color={tintColor}
+        />
+      ),
+    }
+  },
   About: {
     screen: AboutNavigator,
     navigationOptions: {
@@ -256,15 +260,15 @@ const MainNavigator = createDrawerNavigator({
       )
     }
   },
-}, { 
-  initialRouteName: 'Home',
-  drawerBackgroundColor: '#D1C4E9', 
-      contentComponent: CustomDrawerContentComponent
-});
+}, {
+    initialRouteName: 'Home',
+    drawerBackgroundColor: '#D1C4E9',
+    contentComponent: CustomDrawerContentComponent
+  });
 
 class Main extends Component {
 
-  componentDidMount(){ 
+  componentDidMount() {
     this.props.fetchDishes();
     this.props.fetchComments();
     this.props.fetchPromos();
@@ -280,7 +284,7 @@ class Main extends Component {
   }
 }
 
-const styles = StyleSheet.create ({
+const styles = StyleSheet.create({
   container: {
     flex: 1
   },
