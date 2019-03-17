@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import * as Animatable from 'react-native-animatable';
-import { Permissions, Notifications } from 'expo';
+import { Permissions, Notifications, Calendar } from 'expo';
 
 
 
@@ -31,6 +31,7 @@ class Reservation extends Component {
 
 
     handleReservation() {
+        this.addReservationToCalendar(this.state.date)
         Alert.alert(
             'Your Reservation ok?',
             'Number of guest: ' + this.state.guests + '\nSmoking?: ' + this.state.smoking + '\nDate and Time: ' + this.state.date,
@@ -45,7 +46,9 @@ class Reservation extends Component {
                     text: 'OK',
                     onPress: () => {
                         this.presentLocalNotification(this.state.date);
+                        this.handleReservation();
                         this.resetForm();
+
                     }
                 }
             ],
@@ -56,6 +59,31 @@ class Reservation extends Component {
             guests: 1,
             smoking: false,
             date: ''
+        });
+    }
+    
+    async obtainCalendarPermission() {
+        let permission = await Permissions.getAsync(Permissions.CALENDAR);
+        if (permission.status !== 'granted') {
+            permission = await Permissions.askAsync(Permissions.CALENDAR);
+            if (permission.status !== 'granted') {
+                Alert.alert('Permission not granted to update this calendar');
+            }
+        }
+        return permission;
+    }
+    async addReservationToCalendar(date) {
+        console.log('DATE',date)
+        await this.obtainCalendarPermission();
+        Calendar.createEventAsync({
+            calendarId: Calendar.DEFAULT,
+            details: {
+                title: 'Con Fusion Table Reservation',
+                startDate: date,
+                endDate: date,
+                location: '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong',
+                timeZone: 'Asia/Hong_Kong'
+            }
         });
     }
 
@@ -143,7 +171,6 @@ class Reservation extends Component {
                             dateInput: {
                                 marginLeft: 36
                             }
-                            // ... You can check the source to find the other keys. 
                         }}
                         onDateChange={(date) => { this.setState({ date: date }) }}
                     />
